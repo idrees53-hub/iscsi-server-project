@@ -1,0 +1,31 @@
+# This is  iscsi target machine  configuration 
+
+##require package for iscsi target to share the disc 
+--> yum install targetcli -y 
+
+##start the target service 
+--> systemctl enable --now target
+
+
+##NOW RUN THIS COMMAND TO ENTER IN THE INTERFACE 
+--> targetcli 
+
+## Now do all the configuration in the target machine 
+
+--> /backstores/block create name=storage_block  dev=/dev/xvdb 
+
+--> /iscsi create iqn.2024-01.com.example.lab3:node1.lab3.example.com 
+
+--> /iscsi/iqn.2024-01.com.example.lab3:node1.lab3.example.com/tpg1/acls create iqn.2024-01.com.example.lab3:node2.lab3.example.com 
+
+--> /iscsi/iqn.2024-01.com.example.lab3:node1.lab3.example.com/tpg1/luns create /backstores/block/storage_block
+
+--> saveconfig 
+
+--> exit 
+
+## Restart the target service 
+
+--> systemctl restart target
+
+    

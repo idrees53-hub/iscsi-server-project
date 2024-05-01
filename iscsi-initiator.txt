@@ -1,0 +1,23 @@
+#This is the iscsi initiator configuration file 
+
+## Install iscsi related modules for connectivity 
+yum install iscsi* -y 
+systemctl enable --now iscsid
+
+## Now add your target machine ACL's here in the configuration file    
+vim  /etc/iscsi/initiatorname.iscsi
+"edit"
+InitiatorName=iqn.2024-01.com.example.lab3:node2.lab3.example.com   ##make sure you give your target acl's here 
+"save"
+
+## restart the iscsid service 
+systemctl restart iscsid
+
+## run these commaands by which you can see the iscsi shared disc and then by 2nd command you can accept the disc and use it
+
+iscsiadm -m discovery -t st -p 13.233.103.107
+iscsiadm -m node -T iqn.2024-01.com.example.lab3:node1.lab3.example.com  st -p 172.31.9.115:3260 -l
+
+## Now checkout the session and disc by these commands 
+iscsiadm -m session  
+lsblk 
